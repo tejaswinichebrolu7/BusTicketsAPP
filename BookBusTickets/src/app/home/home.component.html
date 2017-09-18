@@ -1,0 +1,21 @@
+<div>
+   <div id="header">
+    <header>
+     <div>
+     <span class="header">Welcome {{currentUser.firstName}} | {{todaysDate | date}} | <a [routerLink]="['/login']">Logout</a> </span>
+     <span class="header" >Care management solutions</span>   
+     </div>
+    </header>
+   </div>
+   
+   
+   <div class="container">
+  <ul class="nav nav-tabs">
+    <li class="active"><a class="tabs" routerLink="/webhome" routerLinkActive="active">Home</a></li>
+    <li><a class="tabs" routerLink="/assessments" routerLinkActive="active">Assements</a></li>
+	<li><a class="tabs" routerLink="/newenrollments" routerLinkActive="active">New Enrollments</a></li>
+  </ul>
+</div>
+<webhome></webhome>
+
+ </div>

@@ -1,0 +1,16 @@
+a {
+    cursor: pointer;
+}
+
+.help-block {
+    font-size: 12px;
+}
+
+.header {
+    display: block;
+}
+
+
+.tabs{
+	background-color: #4CAF50;
+}
