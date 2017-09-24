@@ -21,6 +21,7 @@ export class NewEnrollmentsComponent implements OnInit,OnDestroy {
 	editable:boolean = false;
 	addedPerson:Person;
 	todaysDate: number = Date.now();
+	deleted:boolean=false;
 	
 	constructor(private userService: UserService,private route: ActivatedRoute, private router:Router) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -55,6 +56,10 @@ export class NewEnrollmentsComponent implements OnInit,OnDestroy {
 	this.router.navigate(['Dashboard/payment']);
   }
 
+  goToDashboard(){
+	this.router.navigate(['Dashboard']);
+  }
+
   ngOnDestroy(){
 	  localStorage.removeItem("addedPerson"); 
 	  localStorage.removeItem("person"); 
@@ -67,5 +72,18 @@ export class NewEnrollmentsComponent implements OnInit,OnDestroy {
   
   onClickSubmit(){
 		this.editable = false;
+  }
+  
+  delete(person){
+	  let allPersons = this.persons;
+	  for(let i=0;i<allPersons.length;i++){
+		  if(allPersons[i].passengerName == person.passengerName){
+				if(this.persons.length == 1){
+					this.deleted=true;
+					// this.router.navigate(['/assessments']);
+				}
+			  allPersons.splice(i,1);
+		  } 
+	  }
   }
 }

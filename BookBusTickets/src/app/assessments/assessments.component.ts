@@ -7,7 +7,8 @@ import { Router } from '@angular/router';
 @Component({
     moduleId: module.id,
     selector: 'assessments',
-    templateUrl: 'assessments.component.html'
+    templateUrl: 'assessments.component.html',
+	styleUrls: ['./assessments.component.css']
 })
 
 export class AssessmentsComponent {
@@ -45,11 +46,11 @@ export class AssessmentsComponent {
 		person.email = this.model.email;
 		
 		if(this.add == true){
-			addedPerson.origin = this.model.fromplaces;
-			addedPerson.destination = this.model.toplaces;
-			addedPerson.dateOfJourney = this.model.fromdates;
-			if(this.model.returndates != null){
-				addedPerson.dateOfReturn = this.model.returndates;
+			addedPerson.origin = this.model.fromplace;
+			addedPerson.destination = this.model.toplace;
+			addedPerson.dateOfJourney = this.model.fromdate;
+			if(this.model.returndate != null){
+				addedPerson.dateOfReturn = this.model.returndate;
 			}
 			addedPerson.passengerName = this.model.passengernames;
 			addedPerson.gender = this.model.genders;

@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule }    from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-// used to create fake backend
+
 import { fakeBackendProvider } from './_helpers/index';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { BaseRequestOptions } from '@angular/http';
@@ -27,14 +27,14 @@ import { NewEnrollmentsComponent }  from './newenrollments/newenrollments.compon
 import { PaymentComponent } from './payment/payment.component';
 
 import { Person }  from './persons/person';
-
-@NgModule({
+ 
+@NgModule({  
     imports: [
         BrowserModule,
         FormsModule, 
 		ReactiveFormsModule,
         HttpModule,
-        AppRoutingModule
+        AppRoutingModule 
     ], 
     declarations: [
         AppComponent,
