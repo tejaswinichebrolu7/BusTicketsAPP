@@ -22,7 +22,7 @@ export class NewEnrollmentsComponent implements OnInit,OnDestroy {
 	addedPerson:Person;
 	todaysDate: number = Date.now();
 	
-	constructor(private userService: UserService,private route: ActivatedRoute,) {
+	constructor(private userService: UserService,private route: ActivatedRoute, private router:Router) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         
 	}
@@ -50,7 +50,11 @@ export class NewEnrollmentsComponent implements OnInit,OnDestroy {
 	this.persons.push({origin:origin,destination:destination,dateOfJourney:dateOfJourney,dateOfReturn:dateOfReturn,passengerName:passengerName,gender:gender,phone:phone,email:email});	
 	}
   }
-  
+
+  goToPayments(){
+	this.router.navigate(['Dashboard/payment']);
+  }
+
   ngOnDestroy(){
 	  localStorage.removeItem("addedPerson"); 
 	  localStorage.removeItem("person"); 

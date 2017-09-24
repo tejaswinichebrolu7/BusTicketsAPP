@@ -62,10 +62,10 @@ export class AssessmentsComponent {
 				let addedPerson = JSON.parse(localStorage.getItem('addedPerson'));
 				console.log("addedPerson:"+addedPerson.origin);
 			}
-		this.router.navigate(['/newenrollments',{person,addedPerson}]);
+		this.router.navigate(['Dashboard/newenrollments',{person,addedPerson}]);
 		}
 		else{
-			this.router.navigate(['/newenrollments',person]);
+			this.router.navigate(['Dashboard/newenrollments',person]);
 		}
 	}
 	

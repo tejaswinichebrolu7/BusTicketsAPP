@@ -1,18 +1,4 @@
 <!-- main app container -->
-
-
-<div id="header">
-    <header>
-     <div class="text-right">
-     <h3 class="btn btn-primary">Welcome {{currentUser.firstName}} | {{todaysDate | date}} | 	 
-	 <a [routerLink]="['/assessments']"><span class="glyphicon glyphicon-home" style="color:#FFCA28;"></span></a> | 
-	 <a [routerLink]="['/login']"><span class="glyphicon glyphicon-off" style="color:#FFCA28;"></span></a> </h3> 
-     </div>
-    </header>
-</div>
-   
-   
-
     <div class="container">
         <div class="text-center">
 		<h4 class="panel-heading">Verify Passenger details</h4>
@@ -133,5 +119,5 @@
  </div>
   
  <div>
- <a routerLink="/payment" routerLinkActive="active" class="btn btn-info center-block">Do you want to proceed to Payment section? If yes, click to continue</a>
+	 <span  class="btn btn-info center-block">Do you want to proceed to Payment section? If yes,<a (click)="goToPayments()" class="Bluetext"> Click Here</a> to continue</span>
  </div>
