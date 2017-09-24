@@ -25,14 +25,14 @@ import { NewEnrollmentsComponent }  from './newenrollments/newenrollments.compon
 import { PaymentComponent } from './payment/payment.component';
 
 import { Person }  from './persons/person';
-
-@NgModule({
+ 
+@NgModule({  
     imports: [
         BrowserModule,
         FormsModule, 
 		ReactiveFormsModule,
         HttpModule,
-        AppRoutingModule
+        AppRoutingModule 
     ], 
     declarations: [
         AppComponent, 
