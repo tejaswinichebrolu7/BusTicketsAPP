@@ -1,27 +1,13 @@
 <!-- main app container -->
-
-
-<div id="header">
-    <header>
-     <div class="text-right">
-     <h3 class="btn btn-primary">Welcome {{currentUser.firstName}} | {{todaysDate | date}} | 	 
-	 <a [routerLink]="['/assessments']"><span class="glyphicon glyphicon-home" style="color:#FFCA28;"></span></a> | 
-	 <a [routerLink]="['/login']"><span class="glyphicon glyphicon-off" style="color:#FFCA28;"></span></a> </h3> 
-     </div>
-    </header>
-</div>
-   
-   
-
-    <div class="container">
+    <div class="container" *ngIf="!editable">
         <div class="text-center">
 		<h4 class="panel-heading">Verify Passenger details</h4>
 		</div>
     </div>
 	
-<div class="well" *ngIf="!deleted">
+<div class="well" *ngIf="!editable">
  <div>
-  <table border="1" style="width:100%">
+  <table border="1" style="width:100%" >
 	<thead>
 		<tr>
 			<td><b>S.No</b></td>
@@ -30,7 +16,6 @@
 			<td><b>Destination</b></td>
 		    <td><b>Gender</b></td>
 			<td><b>Journey Date</b></td>
-			<td><b>Email address</b></td>
 			<td>Actions</td>
 		</tr>
 	</thead>
@@ -42,8 +27,7 @@
 			<td>{{person.destination}}</td>
 			<td>{{person.gender}}</td>
 			<td>{{person.dateOfJourney}}</td>
-			<td>{{person.email}}</td>
-			<td><span class="glyphicon glyphicon-edit" (click)="edit(person)"></span><span class="glyphicon glyphicon-trash" (click)="delete(person)"></span></td>
+			<td><span class= "glyphicon glyphicon-edit" (click)="edit(person)"></span><span class="glyphicon glyphicon-trash" (click)="delete(person)"></span></td>
 		</tr>
 	</tbody>
   </table>
@@ -53,10 +37,9 @@
  <div *ngIf="editable">
  <h3>Edit details of {{person.passengerName}}</h3>
 	 <div class="container">
-				<div class="well">
-					
-				<form name="assessmentsform" (ngSubmit)="f.form.valid && onClickSubmit()" #f="ngForm" novalidate>
-					<!-- <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !fromplace.valid }">
+		<div class="well">
+			<form name="assessmentsform" (ngSubmit)="f.form.valid && onClickSubmit()" #f="ngForm" novalidate>
+					<div class="form-group" [ngClass]="{ 'has-error': f.submitted && !fromplace.valid }">
 						<label for="fromplace">Origin</label>
 						<input type="text" class="form-control" name="fromplace" [(ngModel)]="person.origin" #fromplace="ngModel" required 
 								placeholder="Leaving From"/>
@@ -69,21 +52,17 @@
 								placeholder="Going to"/>
 						<div *ngIf="f.submitted && !toplace.valid" class="alert alert-danger">Destination is required</div>
 					</div>
-					
 					<div class="form-group" [ngClass]="{ 'has-error': f.submitted && !fromdate.valid }">
 						<label for="fromdate">Date of journey</label>
 						<input type="date" class="form-control" name="fromdate" [(ngModel)]="person.dateOfJourney" #fromdate="ngModel" required
 								placeholder="Select date"/>
 						<div *ngIf="f.submitted && !fromdate.valid" class="alert alert-danger">Date of journey is required</div>
 					</div>
-					
-					
 					<div class="form-group" [ngClass]="{ 'has-error': f.submitted && !returndate.valid }">
 						<label for="returndate">Date of Return (optional)</label>
 						<input type="date" class="form-control" name="returndate" [(ngModel)]="person.dateOfReturn" #returndate="ngModel"
 								placeholder="Select date"/>
 					</div>
-					 -->
 					<div class="form-group" [ngClass]="{ 'has-error': f.submitted && !passengername.valid }">
 						<label for="passengername">Passenger name</label>
 						<input type="text" class="form-control" name="passengername" [(ngModel)]="person.passengerName" #passengername="ngModel" required />
@@ -105,9 +84,6 @@
 						<input type="number" class="form-control" name="phone" [(ngModel)]="person.phone" #phone="ngModel" required />
 						<div *ngIf="f.submitted && !phone.valid" class="alert alert-danger"> Phone number is required </div>
 					</div>
-					
-					
-					
 					<div class="form-group" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
 						<label>Email</label>
 						<input type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required  class="form-control"  
@@ -129,19 +105,17 @@
 					<img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
 				</div>
 				
-				</form>
-			</div>
-</div>
+			</form>
+		</div>
+     </div>
  </div>
-  
-<div *ngIf="deleted">
-<div class="alert alert-warning" alert-dismissable>
-    <strong>You have deleted all the passengers.</strong> 
-	<a routerLink="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-	<a routerLink="/assessments" routerLinkActive="active" class="label label-warning text-center">Click here to go to home page</a>
-</div>
-</div> 
- 
- <div *ngIf="!deleted" class="text-center">
- <a routerLink="/payment" routerLinkActive="active" class="btn btn-success text-center">Do you want to proceed to Payment section? If yes, click to continue</a>
- </div>
+    <div *ngIf="deleted && !editable">
+		<div class="alert alert-warning" alert-dismissable>
+		    <strong>You have deleted all the passengers.</strong>
+			<a routerLink="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<a (click)="goToDashboard()">Click here to go to home page</a>
+		</div>
+	</div>
+	 <div *ngIf="!deleted && !editable">
+		 <span  class="btn btn-info center-block">Do you want to proceed to Payment section? If yes,<a (click)="goToPayments()" class="Bluetext"> Click Here</a> to continue</span>
+	 </div>

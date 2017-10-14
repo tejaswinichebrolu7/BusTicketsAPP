@@ -1,13 +1,4 @@
 <div>
-<div id="header">
-    <header>
-     <div class="text-right">
-     <h3 class="btn btn-primary">Welcome {{currentUser.firstName}} | {{todaysDate | date}} | 	 
-	 <a [routerLink]="['/assessments']"><span class="glyphicon glyphicon-home" style="color:#FFCA28;"></span></a> | 
-	 <a [routerLink]="['/login']"><span class="glyphicon glyphicon-off" style="color:#FFCA28;"></span></a> </h3> 
-     </div>
-    </header>
-</div>
 
 <div *ngIf="payment">
     <div class="container">
@@ -78,6 +69,6 @@
 <div>
 <h3 class="center-block text-center" *ngIf="success">Congratulations! Thanks for booking the ticket.</h3>
 <h4 class="center-block text-center" *ngIf="success">Your ticket has been mailed to your email address.</h4>
-<a routerLink="#" routerLinkActive="active" class="btn btn-info center-block" *ngIf="success">Book another ticket/Go to HOME page</a>
+<a [routerLink]="['/Dashboard']" routerLinkActive="active" class="btn btn-info center-block" *ngIf="success">Book another ticket/Go to HOME page</a>
 </div>
 </div>

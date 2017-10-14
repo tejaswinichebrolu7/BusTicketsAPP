@@ -3,12 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule }    from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-// used to create fake backend
+
 import { fakeBackendProvider } from './_helpers/index';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { BaseRequestOptions } from '@angular/http';
 
 import { AppComponent }  from './app.component';
+import { DashboardComponent }  from './Dashboard.component';
+import { PageNotFoundComponent } from './PageNotFound.component';
 import { AppRoutingModule }  from './app.routing';
 
 import { AlertComponent } from './_directives/index';
@@ -35,7 +37,9 @@ import { Person }  from './persons/person';
         AppRoutingModule 
     ], 
     declarations: [
-        AppComponent, 
+        AppComponent,
+        DashboardComponent,
+        PageNotFoundComponent,
         AlertComponent,
         HomeComponent,
         LoginComponent,
@@ -50,8 +54,6 @@ import { Person }  from './persons/person';
         AlertService,
         AuthenticationService,
         UserService,
-
-        // providers used to create fake backend
         fakeBackendProvider,
         MockBackend,
         BaseRequestOptions
