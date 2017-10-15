@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { AlertService, AuthenticationService } from '../_services/index';
+import { BusesAvailabilityService } from '../busesAvailability/busesAvailability.service';
 
 @Component({
     moduleId: module.id,
@@ -17,7 +18,8 @@ export class LoginComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
-        private alertService: AlertService) { }
+        private alertService: AlertService,
+        private _busesAvailabilityService : BusesAvailabilityService) { }
 
     ngOnInit() {
         // reset login status
@@ -33,6 +35,7 @@ export class LoginComponent implements OnInit {
             .subscribe(
                 data => {
                     this.router.navigate(["/Dashboard"]);
+                    this._busesAvailabilityService.toggleSearchButton(false);
                 },
                 error => {
                     this.alertService.error(error);

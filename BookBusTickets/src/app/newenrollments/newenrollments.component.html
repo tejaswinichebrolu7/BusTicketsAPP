@@ -5,7 +5,7 @@
 		</div>
     </div>
 	
-<div class="well" *ngIf="!editable">
+<div class="well" *ngIf="!editable || showDetailsForm">
  <div>
   <table border="1" style="width:100%" >
 	<thead>
@@ -20,17 +20,19 @@
 		</tr>
 	</thead>
 	<tbody *ngIf="persons">
-		<tr *ngFor="let person of persons; let i=index">
+		<tr *ngFor="let person of passengersList; let i=index">
 			<td>{{i + 1}}</td>
 			<td>{{person.passengerName}}</td>
 			<td>{{person.origin}}</td>
 			<td>{{person.destination}}</td>
 			<td>{{person.gender}}</td>
 			<td>{{person.dateOfJourney}}</td>
-			<td><span class= "glyphicon glyphicon-edit" (click)="edit(person)"></span><span class="glyphicon glyphicon-trash" (click)="delete(person)"></span></td>
+			<td><span class= "glyphicon glyphicon-edit" (click)="edit(person)"></span><span class="glyphicon glyphicon-trash" (click)="delete(person)"></span>
+			</td>
 		</tr>
 	</tbody>
   </table>
+  <button (click)="add()">Add Another Passenger</button>
   </div>
   </div>
   
@@ -39,7 +41,7 @@
 	 <div class="container">
 		<div class="well">
 			<form name="assessmentsform" (ngSubmit)="f.form.valid && onClickSubmit()" #f="ngForm" novalidate>
-					<div class="form-group" [ngClass]="{ 'has-error': f.submitted && !fromplace.valid }">
+					<!-- <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !fromplace.valid }">
 						<label for="fromplace">Origin</label>
 						<input type="text" class="form-control" name="fromplace" [(ngModel)]="person.origin" #fromplace="ngModel" required 
 								placeholder="Leaving From"/>
@@ -62,7 +64,7 @@
 						<label for="returndate">Date of Return (optional)</label>
 						<input type="date" class="form-control" name="returndate" [(ngModel)]="person.dateOfReturn" #returndate="ngModel"
 								placeholder="Select date"/>
-					</div>
+					</div> -->
 					<div class="form-group" [ngClass]="{ 'has-error': f.submitted && !passengername.valid }">
 						<label for="passengername">Passenger name</label>
 						<input type="text" class="form-control" name="passengername" [(ngModel)]="person.passengerName" #passengername="ngModel" required />

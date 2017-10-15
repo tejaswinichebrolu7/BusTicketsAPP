@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { User } from '../_models/index';
 import { UserService } from '../_services/index';
 import { Person }  from '../persons/person';
 import { Router } from '@angular/router';
+import { BusesAvailabilityService } from '../busesAvailability/busesAvailability.service';
 
 @Component({
     moduleId: module.id,
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 	styleUrls: ['./assessments.component.css']
 })
 
-export class AssessmentsComponent {
+export class AssessmentsComponent implements OnInit {
 
 	currentUser: User;
 	model: any = {};
@@ -20,69 +21,36 @@ export class AssessmentsComponent {
 	first:boolean = true;
 	todaysDate: number = Date.now();
 	passengerDetails:boolean = false;
-	searchDetails:boolean = false;
 	search:boolean = true;
-	
+	searchDetails;
+	fromPlace;
+	toPlace;
 
-	constructor(private userService: UserService, private router:Router) {
+	constructor(private userService: UserService, private router:Router, private _busesAvailabilityService : BusesAvailabilityService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 		this.model.passengername = this.currentUser.firstName;
 	}
-	
-	onClickSubmit() {
-        this.loading = true;
-		console.log("id is:"+this.model.memberid);
-		let person = new Person();
-		let addedPerson = new Person();
-		person.origin = this.model.fromplace;
-		person.destination = this.model.toplace;
-		person.dateOfJourney = this.model.fromdate;
-		if(this.model.returndate != null){
-			person.dateOfReturn = this.model.returndate;
-		}
-		person.passengerName = this.model.passengername;
-		person.gender = this.model.gender;
-		person.phone = this.model.phone;
-		person.email = this.model.email;
-		
-		if(this.add == true){
-			addedPerson.origin = this.model.fromplace;
-			addedPerson.destination = this.model.toplace;
-			addedPerson.dateOfJourney = this.model.fromdate;
-			if(this.model.returndate != null){
-				addedPerson.dateOfReturn = this.model.returndate;
-			}
-			addedPerson.passengerName = this.model.passengernames;
-			addedPerson.gender = this.model.genders;
-			addedPerson.phone = this.model.phones;
-			addedPerson.email = this.model.emails;
-			console.log("coming into added");
-			localStorage.setItem("addedPerson",JSON.stringify(addedPerson));
-			localStorage.setItem('person',JSON.stringify(person));
-			if(localStorage.getItem('addedPerson') !=null){
-				let addedPerson = JSON.parse(localStorage.getItem('addedPerson'));
-				console.log("addedPerson:"+addedPerson.origin);
-			}
-		this.router.navigate(['Dashboard/newenrollments',{person,addedPerson}]);
-		}
-		else{
-			this.router.navigate(['Dashboard/newenrollments',person]);
-		}
+
+	ngOnInit() {
+		this._busesAvailabilityService.searchDetails.subscribe(searchDetails => this.searchDetails = searchDetails)
 	}
 	
 	addAnotherPerson(){
 		this.add = true;
 		this.first = false;
-		console.log("coming into add function");
 	}
 	
 	onSearch(){
-		this.searchDetails=true;
+		this._busesAvailabilityService.toggleSearchButton(true);
 		this.search= false;
+		this.fromPlace = this.model.fromplace;
+		this.toPlace = this.model.toplace;
 	}
 	
 	book(){
-		this.searchDetails=false;
+		this._busesAvailabilityService.toggleSearchButton(true);
 		this.passengerDetails=true;
 	}
+
+
 }
