@@ -39,7 +39,7 @@ export class BusesAvailabilityService {
 									"Operator": "Kaveri",
 									"Price": "Rs1000",
 									"startTime": "9pm",
-									"endTime": 6am"
+									"endTime": "6am"
 									},
 									{
 									"Duration":"10hr",
