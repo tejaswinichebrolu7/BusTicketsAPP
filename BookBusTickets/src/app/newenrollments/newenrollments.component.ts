@@ -1,8 +1,10 @@
-import { Component, OnInit,OnDestroy } from '@angular/core';
+import { Component, OnInit,OnDestroy, Input, HostListener } from '@angular/core';
 import { User } from '../_models/index';
 import { UserService } from '../_services/index';
 import { Router, ActivatedRoute, Params, Data } from '@angular/router';
 import { Person }  from '../persons/person';
+import { NewEnrollmentsService } from './newenrollments.service';
+import { BusesAvailabilityService } from '../busesAvailability/busesAvailability.service';
 
 
 @Component({
@@ -12,7 +14,9 @@ import { Person }  from '../persons/person';
 })
 
 export class NewEnrollmentsComponent implements OnInit,OnDestroy { 
-
+	
+	@Input() passengersList;
+	@Input() ticketPrice;
 	persons:Person[] = [];
 	
 	person:Person;
@@ -21,35 +25,21 @@ export class NewEnrollmentsComponent implements OnInit,OnDestroy {
 	editable:boolean = false;
 	addedPerson:Person;
 	todaysDate: number = Date.now();
-	deleted:boolean=false;
-	
-	constructor(private userService: UserService,private route: ActivatedRoute, private router:Router) {
+	deletedAllPassengers:boolean=false;
+	res = [];
+	showDetailsForm;
+	amountToBePaidFinally;
+	ActualAmountToBePaid;
+	discountApplied;
+
+	constructor(private userService: UserService,private route: ActivatedRoute, private router:Router, private _newEnrollmentsService: NewEnrollmentsService, private _busesAvailabilityService : BusesAvailabilityService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        
+        this._newEnrollmentsService.showDetailsForm.subscribe(showDetailsForm => this.showDetailsForm = showDetailsForm);
 	}
 
-	ngOnInit() {
-	
-	let origin = this.route.snapshot.params['origin'];
-	let destination = this.route.snapshot.params['destination'];
-	let dateOfJourney = this.route.snapshot.params['dateOfJourney'];
-	let dateOfReturn = null;
-	if(this.route.snapshot.params['dateOfReturn'] != null){
-		dateOfReturn = this.route.snapshot.params['dateOfReturn'];
-	}
-	let passengerName = this.route.snapshot.params['passengerName'];
-	let gender = this.route.snapshot.params['gender'];
-	let phone = this.route.snapshot.params['phone'];
-	let email = this.route.snapshot.params['email'];
-
-	if(localStorage.getItem('addedPerson') !=null){
-		this.addedPerson = JSON.parse(localStorage.getItem('addedPerson'));
-		console.log("addedPerson in new enrollments page:"+this.addedPerson.origin);
-		this.persons.push(JSON.parse(localStorage.getItem('person')),JSON.parse(localStorage.getItem('addedPerson')));
-	}
-	else{
-	this.persons.push({origin:origin,destination:destination,dateOfJourney:dateOfJourney,dateOfReturn:dateOfReturn,passengerName:passengerName,gender:gender,phone:phone,email:email});	
-	}
+  ngOnInit() {
+	this.ActualAmountToBePaid = (this.passengersList.length*this.ticketPrice);
+	this.discountApplied = false;
   }
 
   goToPayments(){
@@ -58,6 +48,7 @@ export class NewEnrollmentsComponent implements OnInit,OnDestroy {
 
   goToDashboard(){
 	this.router.navigate(['Dashboard']);
+	this._busesAvailabilityService.toggleSearchButton(false);
   }
 
   ngOnDestroy(){
@@ -74,16 +65,21 @@ export class NewEnrollmentsComponent implements OnInit,OnDestroy {
 		this.editable = false;
   }
   
-  delete(person){
-	  let allPersons = this.persons;
-	  for(let i=0;i<allPersons.length;i++){
-		  if(allPersons[i].passengerName == person.passengerName){
-				if(this.persons.length == 1){
-					this.deleted=true;
-					// this.router.navigate(['/assessments']);
-				}
-			  allPersons.splice(i,1);
-		  } 
-	  }
+  delete(index){
+  	this.passengersList.splice(index,1);
+	this.deletedAllPassengers = this.passengersList.length == 0 ? true : false;
+	this.ActualAmountToBePaid = (this.passengersList.length*this.ticketPrice);
+	this.discountApplied = false;
   }
+
+  add(){
+  	this._newEnrollmentsService.showPassangerForm(false);
+  	this.deletedAllPassengers = false;
+  }
+
+  applyDiscount(){
+  	this.amountToBePaidFinally = (this.passengersList.length < 4) ? (this.ActualAmountToBePaid*(10-this.passengersList.length)/10) : (this.ActualAmountToBePaid *(.6));
+  	this.discountApplied = true;
+  }
+  
 }

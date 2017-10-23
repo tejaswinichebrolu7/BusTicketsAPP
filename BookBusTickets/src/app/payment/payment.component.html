@@ -69,6 +69,6 @@
 <div>
 <h3 class="center-block text-center" *ngIf="success">Congratulations! Thanks for booking the ticket.</h3>
 <h4 class="center-block text-center" *ngIf="success">Your ticket has been mailed to your email address.</h4>
-<a [routerLink]="['/Dashboard']" routerLinkActive="active" class="btn btn-info center-block" *ngIf="success">Book another ticket/Go to HOME page</a>
+<a (click)="goToHomePage()" routerLinkActive="active" class="btn btn-info center-block" *ngIf="success">Book another ticket/Go to HOME page</a>
 </div>
 </div>

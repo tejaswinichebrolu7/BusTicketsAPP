@@ -1,0 +1,96 @@
+ <div class="container">
+    <div *ngIf="!passengerDetails && !showDetails">
+        <h2>{{from}} - {{to}} on {{journeyDate | date}}</h2>
+            
+          <table border="1" style="width:100%" *ngIf="buses.length > 0">
+            <thead>
+                <tr>
+                    <td><b>Departure</b></td>
+                    <td><b>Arrival</b></td>
+                    <td><b>Duration</b></td>
+                    <td><b>Operator</b></td>
+                    <td><b>Price</b></td>
+                    <td><b>Booking</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor = "let bus of buses">
+                    <td><img src= "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1N2dIdKYwk9DTT9xa4hsAkDxyCL4EuSfH72w6kOwvQvnj5Vv" width = "50" height = "50" /> {{bus.startTime}}</td>
+                    <td>{{bus.endTime}}</td>
+                    <td>{{bus.Duration}}</td>
+                    <td>{{bus.Operator}}</td>
+                    <td>Rs {{bus.Price}}</td>
+                    <td><button type="button" class="btn btn-success" (click)="bookTicket(bus)">Book</button></td>
+                </tr>
+            </tbody>
+          </table>
+          <div *ngIf="buses.length == 0">
+              <h3>
+              SORRY right now no services are available in this route.
+              </h3>
+              <button (click)="goBack()">Search Other Routes</button>
+          </div>
+    </div>
+  
+    <div *ngIf="passengerDetails && !showDetails" class="well">
+        <h3> From {{from}} To {{to}} Starting at {{selectedBus.startTime}} on {{journeyDate | date}}</h3>
+        <form name="assessmentsform" (ngSubmit)="f.form.valid && onClickSubmit(f)" #f="ngForm" novalidate>            
+                    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !passengername.valid }">
+                        <label for="passengername">Passenger name</label>
+                        <input type="text" class="form-control" id="passengername" name="passengername" [(ngModel)]="model.passengername" #passengername="ngModel" required />
+                        <div *ngIf="f.submitted && !passengername.valid" class="alert alert-danger">Passenger name is required</div>
+                    </div>
+                    
+                    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !gender.valid }">
+                    <label for="gender">Select gender</label>
+                        <div class="radio">
+                            <label><input type="radio" name="gender" value="male" [(ngModel)]="model.gender" #gender="ngModel">Male</label>
+                            <label><input type="radio" name="gender" value="female" [(ngModel)]="model.gender" #gender="ngModel">Female</label>
+                        </div>
+                        <div *ngIf="f.submitted && !gender.valid" class="alert alert-danger">Gender is required</div>
+                    </div>
+                    
+                    
+                    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !phone.valid }">
+                        <label for="phone">Age</label>
+                        <input type="number" class="form-control" required name="phone" [(ngModel)]="model.phone" #phone="ngModel" maxlength="3"/>
+                        <div *ngIf="f.submitted && !phone.valid" class="alert alert-danger">
+                            <div *ngIf="phone.errors.required">Phone number is required</div>
+                            <div *ngIf="phone.errors.maxlength">Phone number must be 10 digits</div>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
+                        <label>Email</label>
+                        <input type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required  class="form-control"  
+                                placeholder="Email" name="email" [(ngModel)]="model.email" #email="ngModel" required>
+                        <div *ngIf="f.submitted && !email.valid" class="alert alert-danger">
+                            <div *ngIf="email.errors.pattern">Enter valid Email address</div>
+                            <div *ngIf="email.errors.required">Email is required</div>
+                        </div>
+                    </div>
+                    
+                    <!-- <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" name="email" [(ngModel)]="model.email" #email="ngModel" required />
+                        <div *ngIf="f.submitted && !email.valid "> Email is required </div>
+                    </div> -->
+   
+                <div class="form-group" >
+                    <button [disabled]="!f.form.valid" class="btn btn-primary">Submit</button>
+                    <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                    <a (click)="f.reset()" class="btn btn-link">Reset</a>
+                </div>
+            
+                <button *ngIf="f.form.valid" type="button" class="btn btn-success btn-md" (click)="addAnotherPerson(f)">
+                 <span class="glyphicon glyphicon-plus"></span>Add another passenger</button>
+                 
+        </form>
+    </div>
+    <div *ngIf="showDetails ">
+       <newenrollments [passengersList]="passengers" [ticketPrice]="selectedBus.Price"></newenrollments>
+    </div>
+</div>
+  

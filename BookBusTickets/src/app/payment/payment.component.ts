@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder,FormControl, Validators } from '@angular/forms';
 import { User } from '../_models/index';
+import { Router, ActivatedRoute } from '@angular/router';
+import { BusesAvailabilityService } from '../busesAvailability/busesAvailability.service';
 
 @Component({
 	moduleId: module.id,
@@ -22,7 +24,7 @@ export class PaymentComponent{
   currentUser: User;
   payment:boolean = true;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router, private _busesAvailabilityService : BusesAvailabilityService) {
     /* Declare Reactive Form Group here */
 	this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.createForm();
@@ -60,5 +62,10 @@ export class PaymentComponent{
         this.success = false;
         this.failed = true;
     }
+  }
+
+  goToHomePage(){
+    this._busesAvailabilityService.toggleSearchButton(false);
+    this.router.navigate(['Dashboard']);
   }
 }

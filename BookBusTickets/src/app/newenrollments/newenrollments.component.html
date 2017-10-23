@@ -5,33 +5,44 @@
 		</div>
     </div>
 	
-<div class="well" *ngIf="!editable">
+<div class="well" *ngIf="!editable || showDetailsForm">
  <div>
   <table border="1" style="width:100%" >
 	<thead>
 		<tr>
 			<td><b>S.No</b></td>
 			<td><b>Passenger Name</b></td>
-			<td><b>Origin</b></td>
-			<td><b>Destination</b></td>
+ 			<td><b>Age</b></td>
 		    <td><b>Gender</b></td>
-			<td><b>Journey Date</b></td>
+			<td><b>Price</b></td>
 			<td>Actions</td>
 		</tr>
 	</thead>
-	<tbody *ngIf="persons">
-		<tr *ngFor="let person of persons; let i=index">
+	<tbody *ngIf="passengersList">
+		<tr *ngFor="let person of passengersList; let i=index">
 			<td>{{i + 1}}</td>
 			<td>{{person.passengerName}}</td>
-			<td>{{person.origin}}</td>
-			<td>{{person.destination}}</td>
+			<td>{{person.phone}}</td>
 			<td>{{person.gender}}</td>
-			<td>{{person.dateOfJourney}}</td>
-			<td><span class= "glyphicon glyphicon-edit" (click)="edit(person)"></span><span class="glyphicon glyphicon-trash" (click)="delete(person)"></span></td>
+			<td>{{ticketPrice}}</td>
+			<td><span class= "glyphicon glyphicon-edit" (click)="edit(person)"></span><span class="glyphicon glyphicon-trash" (click)="delete(i)"></span>
+			</td>
 		</tr>
 	</tbody>
   </table>
   </div>
+
+ 	<h3> <button (click)="add()">Add Another Passenger</button></h3>  
+  <h3>Total Amount  to be Paid is Rs {{ActualAmountToBePaid}}</h3>
+
+  		<div class="form-group" *ngIf="passengersList">Diwali Special Offers
+  			<label *ngIf="passengersList.length < 4">Discount % applicable to you  is = {{passengersList.length*10}} %</label>
+
+  			<label *ngIf="passengersList.length > 3">Maximum Discount applicable to you  is = 40%</label>
+  			<button (click)="applyDiscount()">Apply</button>
+
+  			<h2 *ngIf="discountApplied">After Discount Amount to be Paid is Rs {{amountToBePaidFinally}}</h2>
+		</div>
   </div>
   
  <div *ngIf="editable">
@@ -39,7 +50,7 @@
 	 <div class="container">
 		<div class="well">
 			<form name="assessmentsform" (ngSubmit)="f.form.valid && onClickSubmit()" #f="ngForm" novalidate>
-					<div class="form-group" [ngClass]="{ 'has-error': f.submitted && !fromplace.valid }">
+					<!-- <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !fromplace.valid }">
 						<label for="fromplace">Origin</label>
 						<input type="text" class="form-control" name="fromplace" [(ngModel)]="person.origin" #fromplace="ngModel" required 
 								placeholder="Leaving From"/>
@@ -62,7 +73,7 @@
 						<label for="returndate">Date of Return (optional)</label>
 						<input type="date" class="form-control" name="returndate" [(ngModel)]="person.dateOfReturn" #returndate="ngModel"
 								placeholder="Select date"/>
-					</div>
+					</div> -->
 					<div class="form-group" [ngClass]="{ 'has-error': f.submitted && !passengername.valid }">
 						<label for="passengername">Passenger name</label>
 						<input type="text" class="form-control" name="passengername" [(ngModel)]="person.passengerName" #passengername="ngModel" required />
@@ -109,13 +120,13 @@
 		</div>
      </div>
  </div>
-    <div *ngIf="deleted && !editable">
+    <div *ngIf="deletedAllPassengers && !editable">
 		<div class="alert alert-warning" alert-dismissable>
 		    <strong>You have deleted all the passengers.</strong>
 			<a routerLink="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 			<a (click)="goToDashboard()">Click here to go to home page</a>
 		</div>
 	</div>
-	 <div *ngIf="!deleted && !editable">
+	 <div *ngIf="!deletedAllPassengers && !editable">
 		 <span  class="btn btn-info center-block">Do you want to proceed to Payment section? If yes,<a (click)="goToPayments()" class="Bluetext"> Click Here</a> to continue</span>
 	 </div>

@@ -27,6 +27,11 @@ import { NewEnrollmentsComponent }  from './newenrollments/newenrollments.compon
 import { PaymentComponent } from './payment/payment.component';
 
 import { Person }  from './persons/person';
+import { BusesAvailability } from './busesAvailability/busesAvailability.component'
+
+import { BusesAvailabilityService } from './busesAvailability/busesAvailability.service'
+import { NewEnrollmentsService } from './newenrollments/newenrollments.service';
+
  
 @NgModule({  
     imports: [
@@ -47,7 +52,8 @@ import { Person }  from './persons/person';
 		WebHomeComponent,
 		AssessmentsComponent,
 		NewEnrollmentsComponent,
-		PaymentComponent
+		PaymentComponent,
+        BusesAvailability
     ],
     providers: [
         AuthGuard,
@@ -56,7 +62,9 @@ import { Person }  from './persons/person';
         UserService,
         fakeBackendProvider,
         MockBackend,
-        BaseRequestOptions
+        BaseRequestOptions,
+        BusesAvailabilityService,
+        NewEnrollmentsService
     ],
     bootstrap: [AppComponent]
 })
