@@ -16,6 +16,7 @@ export class BusesAvailability implements OnInit {
   
   @Input() from;
   @Input() to;
+  @Input() journeyDate;
   
   buses:any = [];
   passengerDetails;

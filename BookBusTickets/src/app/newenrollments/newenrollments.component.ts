@@ -1,9 +1,10 @@
-import { Component, OnInit,OnDestroy, Input } from '@angular/core';
+import { Component, OnInit,OnDestroy, Input, HostListener } from '@angular/core';
 import { User } from '../_models/index';
 import { UserService } from '../_services/index';
 import { Router, ActivatedRoute, Params, Data } from '@angular/router';
 import { Person }  from '../persons/person';
 import { NewEnrollmentsService } from './newenrollments.service';
+import { BusesAvailabilityService } from '../busesAvailability/busesAvailability.service';
 
 
 @Component({
@@ -15,6 +16,7 @@ import { NewEnrollmentsService } from './newenrollments.service';
 export class NewEnrollmentsComponent implements OnInit,OnDestroy { 
 	
 	@Input() passengersList;
+	@Input() ticketPrice;
 	persons:Person[] = [];
 	
 	person:Person;
@@ -23,16 +25,21 @@ export class NewEnrollmentsComponent implements OnInit,OnDestroy {
 	editable:boolean = false;
 	addedPerson:Person;
 	todaysDate: number = Date.now();
-	deleted:boolean=false;
+	deletedAllPassengers:boolean=false;
 	res = [];
 	showDetailsForm;
+	amountToBePaidFinally;
+	ActualAmountToBePaid;
+	discountApplied;
 
-	constructor(private userService: UserService,private route: ActivatedRoute, private router:Router, private _newEnrollmentsService: NewEnrollmentsService) {
+	constructor(private userService: UserService,private route: ActivatedRoute, private router:Router, private _newEnrollmentsService: NewEnrollmentsService, private _busesAvailabilityService : BusesAvailabilityService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this._newEnrollmentsService.showDetailsForm.subscribe(showDetailsForm => this.showDetailsForm = showDetailsForm);
 	}
 
-	ngOnInit() {
+  ngOnInit() {
+	this.ActualAmountToBePaid = (this.passengersList.length*this.ticketPrice);
+	this.discountApplied = false;
   }
 
   goToPayments(){
@@ -41,6 +48,7 @@ export class NewEnrollmentsComponent implements OnInit,OnDestroy {
 
   goToDashboard(){
 	this.router.navigate(['Dashboard']);
+	this._busesAvailabilityService.toggleSearchButton(false);
   }
 
   ngOnDestroy(){
@@ -57,20 +65,21 @@ export class NewEnrollmentsComponent implements OnInit,OnDestroy {
 		this.editable = false;
   }
   
-  delete(person){
-	  let allPersons = this.persons;
-	  for(let i=0;i<allPersons.length;i++){
-		  if(allPersons[i].passengerName == person.passengerName){
-				if(this.persons.length == 1){
-					this.deleted=true;
-					// this.router.navigate(['/assessments']);
-				}
-			  allPersons.splice(i,1);
-		  } 
-	  }
+  delete(index){
+  	this.passengersList.splice(index,1);
+	this.deletedAllPassengers = this.passengersList.length == 0 ? true : false;
+	this.ActualAmountToBePaid = (this.passengersList.length*this.ticketPrice);
+	this.discountApplied = false;
   }
 
   add(){
   	this._newEnrollmentsService.showPassangerForm(false);
+  	this.deletedAllPassengers = false;
   }
+
+  applyDiscount(){
+  	this.amountToBePaidFinally = (this.passengersList.length < 4) ? (this.ActualAmountToBePaid*(10-this.passengersList.length)/10) : (this.ActualAmountToBePaid *(.6));
+  	this.discountApplied = true;
+  }
+  
 }

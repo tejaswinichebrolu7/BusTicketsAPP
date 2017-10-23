@@ -7,4 +7,5 @@ export class Person{
   gender:string;
   phone:number;
   email:string;
+  price;
 }

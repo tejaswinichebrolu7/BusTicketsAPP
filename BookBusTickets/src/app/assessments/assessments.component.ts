@@ -25,6 +25,8 @@ export class AssessmentsComponent implements OnInit {
 	searchDetails;
 	fromPlace;
 	toPlace;
+	journeyDate;
+	places= ['hyd', 'mdp', 'goa'];
 
 	constructor(private userService: UserService, private router:Router, private _busesAvailabilityService : BusesAvailabilityService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -40,11 +42,13 @@ export class AssessmentsComponent implements OnInit {
 		this.first = false;
 	}
 	
-	onSearch(){
+	onSearch(f){
 		this._busesAvailabilityService.toggleSearchButton(true);
 		this.search= false;
 		this.fromPlace = this.model.fromplace;
 		this.toPlace = this.model.toplace;
+		this.journeyDate = this.model.fromdate;
+		f.reset();
 	}
 	
 	book(){

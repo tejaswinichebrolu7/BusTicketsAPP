@@ -32,15 +32,21 @@
 				<div  class="well">
 					<div class="form-group" [ngClass]="{ 'has-error': f.submitted && !fromplace.valid }">
 						<label for="fromplace">Origin</label>
-						<input type="text" class="form-control" name="fromplace" [(ngModel)]="model.fromplace" #fromplace="ngModel" required 
-								placeholder="Leaving From"/>
+						<!-- <input type="text" class="form-control" name="fromplace" [(ngModel)]="model.fromplace" #fromplace="ngModel" required 
+                placeholder="Leaving From"/> -->
+            <select type="text" class="form-control" name="fromplace" [(ngModel)]="model.fromplace" #fromplace="ngModel" required>
+                    <option *ngFor="let place of places" [value]="place">{{place}}</option>
+                 </select>    
 						<div *ngIf="fromplace.touched && !fromplace.valid" class="alert alert-danger">Origin is required</div>
 					</div>
 					
 					<div class="form-group" [ngClass]="{ 'has-error': f.submitted && !toplace.valid }">
 						<label for="toplace">Destination</label>
-						<input type="text" class="form-control" name="toplace" [(ngModel)]="model.toplace" #toplace="ngModel" required
-								placeholder="Going to"/>
+						<!-- <input type="text" class="form-control" name="toplace" [(ngModel)]="model.toplace" #toplace="ngModel" required
+                placeholder="Going to"/> -->
+            <select type="text" class="form-control" name="toplace" [(ngModel)]="model.toplace" #toplace="ngModel" required>
+              <option *ngFor="let place of places" [value]="place">{{place}}</option>
+            </select>    
 						<div *ngIf="toplace.touched &&!toplace.valid" class="alert alert-danger">Destination is required</div>
 					</div>
 					
@@ -57,9 +63,11 @@
 						<input type="date" class="form-control" name="returndate" [(ngModel)]="model.returndate" #returndate="ngModel"
 								placeholder="Select date"/>
 					</div>
-					
+					<div class="form-group" *ngIf = "fromplace.valid &&(fromplace.value == toplace.value)">
+                <label >Origin and Destination cannnot be same, please select different locations.</label> 
+          </div>
 					<div class="text-center">
-					<button type="button" class="btn btn-danger" (click)="onSearch()" [disabled]="!fromplace.valid || !toplace.valid || !fromdate.valid">
+					<button type="button" class="btn btn-danger" (click)="onSearch(f)" [disabled]="!fromplace.valid || !toplace.valid || !fromdate.valid || (fromplace.value == toplace.value)">
 					<span class="glyphicon glyphicon-search">Search</span></button>
 					</div>
 					
@@ -73,7 +81,8 @@
 
 
 
- <buses-availability *ngIf="searchDetails && !passengerDetails" [from]="fromPlace" [to]="toPlace"></buses-availability> 
+ <buses-availability *ngIf="searchDetails && !passengerDetails" [from]="fromPlace" [to]="toPlace"
+ [journeyDate]= "journeyDate"></buses-availability> 
 
 
   

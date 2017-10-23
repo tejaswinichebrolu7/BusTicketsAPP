@@ -65,7 +65,6 @@ export class PaymentComponent{
   }
 
   goToHomePage(){
-  alert("homepage");
     this._busesAvailabilityService.toggleSearchButton(false);
     this.router.navigate(['Dashboard']);
   }

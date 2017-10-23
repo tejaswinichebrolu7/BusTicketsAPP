@@ -2,7 +2,7 @@
     <header>
      <div class="text-right">
      <h3 class="btn btn-primary">Welcome {{currentUser.firstName}} | {{todaysDate | date}} |   
-       <a [routerLink]="['/Dashboard/assessments']"><span class="glyphicon glyphicon-home" tite="Home"style="color:#FFCA28;"></span></a> | 
+       <a (click)="goToHome()"><span class="glyphicon glyphicon-home" tite ="Home"style="color:#FFCA28;"></span></a> | 
        <a [routerLink]="['/login']"><span class="glyphicon glyphicon-off" title="Logout" style="color:#FFCA28;"></span></a> </h3> 
      </div>
     </header>

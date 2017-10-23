@@ -15,15 +15,15 @@ export class BusesAvailabilityService {
 						"buses": [
 									{
 									"Duration":"9hr",
-									"Operator": "Kaveri",
-									"Price": "Rs1000",
+									"Operator": "Gunnam Travells",
+									"Price": "1600",
 									"startTime": "8pm",
 									"endTime": "5am"
 									},
 									{
 									"Duration":"10hr",
-									"Operator": "Meghana",
-									"Price": "Rs1500",
+									"Operator": "Meghana Travells",
+									"Price": "1000",
 									"startTime": "10pm",
 									"endTime": "8am"
 									}
@@ -36,18 +36,33 @@ export class BusesAvailabilityService {
 						"buses": [
 									{
 									"Duration":"9hr",
-									"Operator": "Kaveri",
-									"Price": "Rs1000",
+									"Operator": "Goli Travells",
+									"Price": "1000",
 									"startTime": "9pm",
 									"endTime": "6am"
 									},
 									{
 									"Duration":"10hr",
-									"Operator": "Meghana",
-									"Price": "Rs1500",
+									"Operator": "Vytla Travells",
+									"Price": "2500",
 									"startTime": "11pm",
 									"endTime": "9am"
+									},
+									{
+									"Duration":"7hr",
+									"Operator": "Orange Travells",
+									"Price": "1200",
+									"startTime": "8pm",
+									"endTime": "3am"
+									},
+									{
+									"Duration":"8hr",
+									"Operator": "Phani Travells",
+									"Price": "2700",
+									"startTime": "10pm",
+									"endTime": "6am"
 									}
+
 
 								]
 					}
